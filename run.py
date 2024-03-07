@@ -8,21 +8,24 @@ from webdriver_manager.chrome import ChromeDriverManager
 import pandas as pd
 import time
 
-path = "/Users/dongseok/codes/iPBL/competency_march/i-PBL_Competency/chromedriver"
 service = Service(ChromeDriverManager().install())
 driver = webdriver.Chrome(service=service)
 
 url = "https://www.laphil.com/events/performances"
 driver.get(url)
+
+# for scrolling
 current_scroll_position = driver.execute_script("return window.pageYOffset;")
 scroll_height = driver.execute_script("return document.body.scrollHeight;")
-if current_scroll_position << scroll_height:
-    driver.execute.script("window.scrollTo(0, document.body.scrollHeight);")
+if current_scroll_position < scroll_height:
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    time.sleep(1)
 driver.implicitly_wait(10)
 
 soup = BeautifulSoup(driver.page_source, "html.parser")
-
 titles = soup.find_all(class_="info")
+
+# # Dislay raw lines
 # print(titles)
 # for title in titles:
 #    print(title.text.strip())
@@ -30,18 +33,20 @@ titles = soup.find_all(class_="info")
 
 data = []
 titles = soup.find_all(class_="info")
-# print(titles)
 for title in titles:
+    # bring title text
     title_text = title.find(class_="name name--short").get_text(strip=True)
-    # supporting-acts에 있는 텍스트를 가져옵니다.
+    # bring supporting-acts text
     supporting_acts = title.find(class_="supporting-acts")
     supporting_acts_text = (
         supporting_acts.get_text(strip=True) if supporting_acts else ""
     )
-    # title과 supporting_acts를 출력합니다.
+    # parse text
     date_text = title.find(class_="date-text").get_text(strip=True)
     time_text = title.find(class_="time").get_text(strip=True).replace("\n", " ")
     time_text = " ".join(time_text.split())
+
+    # append to Pandas DataFrame
     data.append({"title": title_text, "date": date_text, "time": time_text})
     # print(title_text + " " + supporting_acts_text + " " + date_text + " " + time_text)
 
