@@ -2,11 +2,14 @@
 ## VERSION : 0.1
 
 This is a Python code for organizing concert information.
+
+Result will be stored in Pandas DataFrame.
+
 Tested on **Python 3.8.18**
 
-Currently it works for LA Phil website and can crawl only one month. It will be updated soon.
+Currently it works for LA Phil website and can crawl only scrolling type page. It will be updated.
 
-My goal is to make it generally work for any kind of concert halls, sports matches, etc.
+My goal is to make it generally working for any kind of concert halls, sports matches, etc.
 
 
 # USAGE
